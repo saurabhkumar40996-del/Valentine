@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>For My Baby ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+    margin:0;
+    padding:0;
+    text-align:center;
+    font-family:'Segoe UI', sans-serif;
+    background: linear-gradient(-45deg,#ff758c,#ff7eb3,#ff4b7d,#ff9a9e);
+    background-size:400% 400%;
+    animation: gradient 10s ease infinite;
+    color:white;
+    overflow:auto;
+}
+
+@keyframes gradient{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+.container{
+    padding:20px;
+    margin-top:20px;
+}
+
+h1{
+    font-size:28px;
+    text-shadow:0 0 10px white;
+}
+
+h2{
+    font-size:20px;
+}
+
+img{
+    display:block;
+    width:70%;
+    max-width:220px;
+    margin:20px auto;
+    border-radius:20px;
+    box-shadow:0 0 25px rgba(255,255,255,0.6);
+}
+
+/* Hide only text part */
+#textSection.hide{
+    display:none;
+}
+
+button{
+    padding:12px 22px;
+    font-size:16px;
+    border:none;
+    border-radius:30px;
+    margin:10px;
+    transition:0.3s;
+    cursor:pointer;
+}
+
+#yesBtn{
+    background:white;
+    color:#ff4b7d;
+    font-weight:bold;
+}
+
+#yesBtn:hover{
+    transform:scale(1.1);
+}
+
+#noBtn{
+    background:#ff4b7d;
+    color:white;
+    position:relative;
+}
+
+/* BEAUTIFUL MESSAGE STYLE */
+#message{
+    display:none;
+    font-size:34px;
+    font-weight:bold;
+    margin-top:30px;
+    line-height:1.5;
+    text-shadow:0 0 15px #fff, 0 0 30px #ff4b7d;
+    animation:fadein 2s ease-in-out;
+}
+
+/* RADHA RANI STYLE */
+#secondMessage{
+    display:none;
+    font-size:38px;
+    font-weight:bold;
+    margin-top:25px;
+    background:linear-gradient(45deg,#fff,#ffd700,#ff4b7d);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    text-shadow:0 0 25px #fff;
+    animation:fadein 3s ease-in-out;
+}
+
+@keyframes fadein{
+    from{opacity:0; transform:translateY(20px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    pointer-events:none;
+}
+
+.heart{
+    position:fixed;
+    bottom:-20px;
+    font-size:20px;
+    animation:float 6s linear infinite;
+}
+
+@keyframes float{
+    0%{transform:translateY(0);}
+    100%{transform:translateY(-100vh);}
+}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="fireworks"></canvas>
+
+<div class="container">
+
+<div id="textSection">
+<h1>Happy Valentine's Day Damini ❤️</h1>
+<h2>My Sweet Baby 💕</h2>
+
+<p>You are the most beautiful part of my life.</p>
+<p>Every moment with you feels magical ✨</p>
+
+<h2>Baby, will you be my Valentine forever? 💖</h2>
+
+<button id="yesBtn" onclick="sayYes()">YES 💘</button>
+<button id="noBtn" onclick="moveNo()">NO 😜</button>
+</div>
+
+<!-- PHOTO ALWAYS STAYS -->
+<img src="photo.jpg" alt="My Love">
+
+<!-- NEW BEAUTIFUL MESSAGE -->
+<div id="message">
+✨ Thank you for choosing me ❤️<br>
+You made my world complete 💍💖
+</div>
+
+<div id="secondMessage">
+You are my Radha ❤️ Rani
+</div>
+
+</div>
+
+<audio id="music" preload="auto">
+<source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+function moveNo(){
+    var btn=document.getElementById("noBtn");
+    btn.style.position="absolute";
+    btn.style.left=Math.random()*window.innerWidth+"px";
+    btn.style.top=Math.random()*window.innerHeight+"px";
+}
+
+function sayYes(){
+
+    // Hide only text section (photo remains)
+    document.getElementById("textSection").classList.add("hide");
+
+    // Show beautiful message
+    document.getElementById("message").style.display="block";
+
+    document.getElementById("music").play();
+    startFireworks();
+
+    // Show Radha Rani after 20 seconds
+    setTimeout(function(){
+        document.getElementById("secondMessage").style.display="block";
+    },20000);
+}
+
+// Floating hearts
+setInterval(function(){
+    var heart=document.createElement("div");
+    heart.className="heart";
+    heart.innerHTML="💖";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.fontSize=(Math.random()*20+15)+"px";
+    document.body.appendChild(heart);
+    setTimeout(function(){heart.remove();},6000);
+},500);
+
+// FIREWORKS
+var canvas=document.getElementById("fireworks");
+var ctx=canvas.getContext("2d");
+
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+function resizeCanvas(){
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
+}
+
+var particles=[];
+
+function startFireworks(){
+    setInterval(createFirework,700);
+    animate();
+}
+
+function createFirework(){
+    var x=Math.random()*canvas.width;
+    var y=Math.random()*canvas.height/2;
+
+    for(var i=0;i<50;i++){
+        particles.push({
+            x:x,
+            y:y,
+            radius:Math.random()*3+1,
+            color:"hsl("+Math.random()*360+",100%,50%)",
+            speedX:(Math.random()-0.5)*6,
+            speedY:(Math.random()-0.5)*6,
+            life:100
+        });
+    }
+}
+
+function animate(){
+    requestAnimationFrame(animate);
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    for(var i=0;i<particles.length;i++){
+        var p=particles[i];
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
+        ctx.fillStyle=p.color;
+        ctx.fill();
+
+        p.x+=p.speedX;
+        p.y+=p.speedY;
+        p.life--;
+
+        if(p.life<=0){
+            particles.splice(i,1);
+            i--;
+        }
+    }
+}
+
+</script>
+
+</body>
+</html>
